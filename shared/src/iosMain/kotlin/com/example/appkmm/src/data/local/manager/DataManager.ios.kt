@@ -1,6 +1,5 @@
 package com.example.appkmm.src.data.local.manager
 
-import com.example.appkmm.src.data.local.database.DataStoreManager
 import com.example.appkmm.src.models.RequestData
 import platform.Foundation.NSUserDefaults
 import kotlinx.serialization.decodeFromString
@@ -20,5 +19,39 @@ actual class DataManager actual constructor(context : Any?) {
         val serializedValue = defaults.objectForKey(key) as? String
         return serializedValue?.let { Json.decodeFromString(it) }
     }
+
+    actual suspend fun saveCoreLibId(key: String, value: String) {
+        val defaults = NSUserDefaults.standardUserDefaults
+        defaults.setObject(value, key)
+        defaults.synchronize()
+    }
+
+    actual suspend fun readCoreLibId(key: String): String? {
+        val defaults = NSUserDefaults.standardUserDefaults
+        return defaults.objectForKey(key) as? String
+    }
+
+    actual suspend fun saveBaseUrl(key: String, value: String) {
+        val defaults = NSUserDefaults.standardUserDefaults
+        defaults.setObject(value, key)
+        defaults.synchronize()
+    }
+
+    actual suspend fun readBaseUrl(key: String): String? {
+        val defaults = NSUserDefaults.standardUserDefaults
+        return defaults.objectForKey(key) as? String
+    }
+
+    actual suspend fun saveMpDeviceIdentifier(key: String, value: String) {
+        val defaults = NSUserDefaults.standardUserDefaults
+        defaults.setObject(value, key)
+        defaults.synchronize()
+    }
+
+    actual suspend fun readMpDeviceIdentifier(key: String): String? {
+        val defaults = NSUserDefaults.standardUserDefaults
+        return defaults.objectForKey(key) as? String
+    }
 }
+
 

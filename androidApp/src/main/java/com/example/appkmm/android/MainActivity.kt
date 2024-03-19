@@ -1,5 +1,6 @@
 package com.example.appkmm.android
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -19,6 +20,7 @@ import com.example.appkmm.src.repository.CorelibDelegate
 
 class MainActivity : ComponentActivity() {
      val TAG = "MainAct"
+    @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -27,15 +29,19 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    val env = listOf<String>("staging","prepord","prod")
+                    val coreLibId = "AK-84d4112081678b2d01bd3fe7de2d3fe7"
                     val repository = CorelibDelegate.initCoreLib()
                     val state = remember { mutableStateOf("Loading") }
                     //val dataStoreManager = AndroidDataStoreManager(applicationContext)
                     //val dataManager = DataManager(dataStoreManager)
                     LaunchedEffect(true) {
                         try {
-                            state.value = repository.postUserData(applicationContext).toString()
+                            //val result = repository.corelibInit(env[2],coreLibId,applicationContext)
+                            val result = repository.update(applicationContext)
+                            state.value = result.responseCode.toString()+" "+result.responseMessage+" "+result.responseDescription+" "+result.responseData
                             //repository.saveUserData(applicationContext)
-                            Log.w(TAG,"the saved data is : ${repository.readUserData(applicationContext)}")
+                            //Log.w(TAG,"the saved data is : ${repository.readUserData(applicationContext)}")
                         } catch (e: Exception) {
                             state.value
                         }

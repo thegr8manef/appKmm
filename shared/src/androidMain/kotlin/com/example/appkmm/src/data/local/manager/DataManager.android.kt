@@ -17,19 +17,47 @@ actual class DataManager actual constructor(context: Any?)  {
         private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "CoreLib")
     }
 
-    //private val Context.dataStore by preferencesDataStore("CoreLib")
-    val androidContext = context as? Context
+    private val androidContext = context as? Context
+
     actual suspend fun saveData(key: String, value: RequestData) {
         val serializedValue = Json.encodeToString(value)
-         androidContext?.dataStore?.edit { preferences ->
+        androidContext?.dataStore?.edit { preferences ->
             preferences[stringPreferencesKey(key)] = serializedValue
         }
     }
 
-
-     actual suspend fun readData(key: String): RequestData? {
+    actual suspend fun readData(key: String): RequestData? {
         val serializedValue = androidContext?.dataStore?.data?.firstOrNull()?.get(stringPreferencesKey(key))
         return serializedValue?.let { Json.decodeFromString(it) }
     }
 
+    actual suspend fun saveCoreLibId(key: String, value: String) {
+        androidContext?.dataStore?.edit { preferences ->
+            preferences[stringPreferencesKey(key)] = value
+        }
+    }
+
+    actual suspend fun readCoreLibId(key: String): String? {
+        return androidContext?.dataStore?.data?.firstOrNull()?.get(stringPreferencesKey(key))
+    }
+
+    actual suspend fun saveBaseUrl(key: String, value: String) {
+        androidContext?.dataStore?.edit { preferences ->
+            preferences[stringPreferencesKey(key)] = value
+        }
+    }
+
+    actual suspend fun readBaseUrl(key: String): String? {
+        return androidContext?.dataStore?.data?.firstOrNull()?.get(stringPreferencesKey(key))
+    }
+
+    actual suspend fun saveMpDeviceIdentifier(key: String, value: String) {
+        androidContext?.dataStore?.edit { preferences ->
+            preferences[stringPreferencesKey(key)] = value
+        }
+    }
+
+    actual suspend fun readMpDeviceIdentifier(key: String): String? {
+        return androidContext?.dataStore?.data?.firstOrNull()?.get(stringPreferencesKey(key))
+    }
 }

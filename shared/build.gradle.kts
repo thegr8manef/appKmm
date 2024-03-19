@@ -41,6 +41,7 @@ kotlin {
             implementation("io.ktor:ktor-client-json:1.6.4")
             implementation("io.ktor:ktor-client-json-jvm:1.6.4")
             implementation("io.ktor:ktor-client-serialization:1.6.4")
+            implementation("org.jetbrains.kotlin:kotlin-stdlib")
 
 
 
